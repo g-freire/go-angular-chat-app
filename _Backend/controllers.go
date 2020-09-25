@@ -1,17 +1,17 @@
+// package csp_stream
 package main
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/websocket"
-	uuid "github.com/satori/go.uuid"
+	"github.com/satori/go.uuid"
 	"net/http"
 )
 
 
 //The ClientManager will keep track of all the connected clients, clients that are trying to become registered,
 // clients that have become destroyed and are waiting to be removed, and messages that are to be broadcasted to and from all connected clients.
-
 type ClientManager struct {
 	clients    map[*Client]bool
 	broadcast  chan []byte
@@ -116,13 +116,18 @@ func (c *Client) write() {
 	}
 }
 
-func wsPage(res http.ResponseWriter, req *http.Request) {
+func wsHandler(res http.ResponseWriter, req *http.Request) {
 	conn, error := (&websocket.Upgrader{CheckOrigin: func(r *http.Request) bool { return true }}).Upgrade(res, req, nil)
 	if error != nil {
 		http.NotFound(res, req)
 		return
 	}
-	client := &Client{id: string(uuid.V1), socket: conn, send: make(chan []byte)}
+	
+	// Creating UUID Version 4
+	// panic on error
+	u1 := uuid.Must(uuid.NewV4())
+	client := &Client{id: u1.String(), socket: conn, send: make(chan []byte)}
+	fmt.Printf("\n New client connected: %s\n", client.id)
 
 	manager.register <- client
 
@@ -130,9 +135,11 @@ func wsPage(res http.ResponseWriter, req *http.Request) {
 	go client.write()
 }
 
-func main() {
+ func main() {
+	PORT := ":8000"
 	fmt.Println("Starting application...")
+	fmt.Printf("Serving at %s", PORT)
 	go manager.start()
-	http.HandleFunc("/ws", wsPage)
-	http.ListenAndServe(":5000", nil)
-}
+	http.HandleFunc("/ws", wsHandler)
+	http.ListenAndServe(PORT, nil)
+ }

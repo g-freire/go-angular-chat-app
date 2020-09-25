@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"time"
+	// "time"
 	"context"
 	"github.com/gorilla/websocket"
 	"net/http"
@@ -35,27 +35,29 @@ func handlerRoot(writer http.ResponseWriter, request *http.Request){
 	if err != nil {
 		fmt.Println(err)
 	}
+	err =socket.WriteMessage(1, []byte("test"))
 	// WRITE ONLY STREAM INFINITE LOOP
-	for {
-		//wsMsg := []byte("TEST MSG FROM GO SERVER")
-		// STRING 1 / BYTES 2
-		//err = socket.WriteMessage(1, wsMsg)
-		//JSON
-		wsMsg := queryLastIBOP()
-		err =socket.WriteJSON(wsMsg)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		fmt.Println("SENDING MESSAGE", wsMsg)
-		time.Sleep(1 * time.Second)
-	}}
+	// for {
+	// 	//wsMsg := []byte("TEST MSG FROM GO SERVER")
+	// 	// STRING 1 / BYTES 2
+	// 	//err = socket.WriteMessage(1, wsMsg)
+	// 	//JSON
+	// 	wsMsg := queryLastIBOP()
+	// 	err =socket.WriteJSON(wsMsg)
+	// 	if err != nil {
+	// 		fmt.Println(err)
+	// 		return
+	// 	}
+	// 	fmt.Println("SENDING MESSAGE", wsMsg)
+	// 	time.Sleep(1 * time.Second)
+	// }
+}
 
 
 // IBOP QUERY DATA
 type IBOPInfo struct {
 	ID      *primitive.ObjectID `json:"ID" bson:"_id,omitempty"`
-	IbopId 		 string   `json:"ibop_id" bson:"ibop_id"`
+	IbopID 		 string   `json:"ibop_id" bson:"ibop_id"`
 	CurrentState       string   `json:"current_state" bson:"current_state"`
 	IsActive     bool `json:"is_active" bson:"is_active"`
 }
@@ -91,8 +93,8 @@ func queryLastIBOP() IBOPInfo{
 }
 
 
-func main(){
-	http.HandleFunc("/", handlerRoot)
-	http.HandleFunc("/v", handleVersion)
-	http.ListenAndServe(":5000", nil)
-}
+// func main(){
+// 	http.HandleFunc("/", handlerRoot)
+// 	http.HandleFunc("/v", handleVersion)
+// 	http.ListenAndServe(":9000", nil)
+// }
