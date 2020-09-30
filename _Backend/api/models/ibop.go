@@ -3,7 +3,7 @@ package models
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type IBOPInfo struct {
-	ID           *primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	ID             *primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
 	IbopId 		    string   `json:"ibop_id" bson:"ibop_id"`
 	CreationTime    primitive.DateTime   `json:"creation_time" bson:"creation_time"`
 	CreationTimeISO string   `json:"creation_time_iso" bson:"creation_time_iso"`

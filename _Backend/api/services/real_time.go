@@ -10,7 +10,7 @@ import (
 func GetRealTimeInfo(host string) models.RealTime{
 	m := repository.MongoGenericRepository{}
 	m.GetClient(host)
-	bsonIbopInfo:= m.ReadLastN("QA_ODN2","REAL_TIME", 1)
+	bsonIbopInfo:= m.ReadLastN("QA_ODN2","REAL_TIME", 1, true)
 	RealTime := parseRealTimeBSONtoModel(bsonIbopInfo)
 	return RealTime
 }

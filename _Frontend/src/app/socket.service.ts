@@ -7,7 +7,7 @@ export class SocketService {
     private listener: EventEmitter<any> = new EventEmitter();
 
     public constructor() {
-        this.socket = new WebSocket("ws://localhost:5000/ws");
+        this.socket = new WebSocket("ws://localhost:4444/ws");
         this.socket.onopen = event => {
             this.listener.emit({"type": "open", "data": event});
         }

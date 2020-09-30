@@ -4,14 +4,13 @@ import (
 	"../models"
 	"../repository"
 	"go.mongodb.org/mongo-driver/bson"
-
 )
 
 
 func GetIbopInfo(host string) models.IBOPInfo{
 	m := repository.MongoGenericRepository{}
 	m.GetClient(host)
-	bsonIbopInfo:= m.ReadLastN("QA_ODN2","IBOP_INFO", 1)
+	bsonIbopInfo:= m.ReadLastN("QA_ODN2","IBOP_INFO", 1, true)
 	IbopInfo := parseBSONtoModel(bsonIbopInfo)
 	return IbopInfo
 }

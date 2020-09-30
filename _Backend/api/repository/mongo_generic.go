@@ -37,13 +37,15 @@ func (m *MongoGenericRepository)  GetClient(host string)  {
 }
 
 
-func (m *MongoGenericRepository) ReadLastN(database string, collection string, n int8) []bson.M {
+func (m *MongoGenericRepository) ReadLastN(database string, collection string, n int64, sorted bool) []bson.M {
 
 	dcollection := m.Conn.Database(database).Collection(collection)
 	filter := bson.M{}
 	options := options.Find()
-	options.SetSort(bson.D{{"_id", -1}})
-	options.SetLimit(2)
+	if sorted{
+		options.SetSort(bson.D{{"_id", -1}})
+	}
+	options.SetLimit(n)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()

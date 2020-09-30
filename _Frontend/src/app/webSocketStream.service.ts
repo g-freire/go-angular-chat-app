@@ -23,13 +23,13 @@ type NewType = EventEmitter<any>;
 
   private ws: WebSocket
   public webSocketAdress : "ws://localhost:5000/ws" |
-                           "ws://localhost:80/ws" |
+                           "ws://localhost:4444/ws" |
                            'wss://topdrive-api-qa.azurewebsites.net/ws'
   mProfileResults
 
   constructor(
   ) {
-    this.webSocketAdress = "ws://localhost:5000/ws"
+    this.webSocketAdress = "ws://localhost:4444/ws"
     this.streamSubject$ = new Subject<any>();
     this.streamObservableResult$ = this.streamSubject$.asObservable();
     this.connectWS()
